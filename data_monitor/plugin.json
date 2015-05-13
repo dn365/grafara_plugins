@@ -1,0 +1,17 @@
+{
+  "pluginType": "datasource",
+  "name": "data monitor v1.0",
+
+  "type": "data_mon",
+  "serviceName": "MonDatasource",
+
+  "module": "plugins/datasource/data_monitor/datasource",
+
+  "partials": {
+    "config": "app/plugins/datasource/data_monitor/partials/config.html",
+    "query": "app/plugins/datasource/data_monitor/partials/query.editor.html"
+  },
+
+  "metrics": true,
+  "annotations": true
+}
