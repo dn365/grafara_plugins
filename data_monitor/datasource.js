@@ -34,9 +34,9 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
 
       for (var i=0;i<vars.length;i++) {
         var pair = vars[i].split("=");
-        if (pair[0] === "app_key") {
+        if (pair[0] === "api_key") {
           // this.api = decodeURIComponent(pair[1]);
-          this.app_key = pair[1];
+          this.api_key = pair[1];
         }
       }
 
@@ -75,8 +75,17 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
         // query = _.map(query,function(value, key){
         //   return key+'='+value;
         // }).join('&');
+        var strQuery = JSON.stringify(query);
+
+        _.map(templateSrv._values,function(v,k) {
+          return strQuery = strQuery.replace('$'+k,v);
+        });
+
+        query = JSON.parse(strQuery);
 
         // query = templateSrv.replace(query);
+
+
 
         var alias = target.alias ? templateSrv.replace(target.alias) : '';
 
@@ -176,7 +185,7 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
         var currentUrl =  self.url;
 
         var params = {
-          app_key: self.app_key,
+          api_key: self.api_key,
         };
 
         if (self.database) {
