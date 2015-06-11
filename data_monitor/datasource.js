@@ -125,7 +125,6 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
         return $q.reject(err);
       }
 
-
       return this._seriesQuery(interpolated, query).then(function (results) {
 
         if (!results || results.length === 0) { return []; }
@@ -172,6 +171,8 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
         return this._monRequest('GET',"/metrics/tags",{name:query.name,type:'values',key:query.key});
       case 'Measurements':
         return this._monRequest('GET','/metrics/measurements',query);
+      default:
+        return this._monRequest('GET',query, {});
       }
     };
 
