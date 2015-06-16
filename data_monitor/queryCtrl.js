@@ -54,7 +54,7 @@ function (angular, _) {
         query = {'name':measurement,'key':$scope.segments[$scope.segments.length - 2].value};
       }
 
-      console.log('getAltSegments: query type' , queryType);
+      // console.log('getAltSegments: query type' , queryType);
       // console.log(query);
 
       return $scope.datasource.metricFindQuery(query, queryType).then(function(results) {

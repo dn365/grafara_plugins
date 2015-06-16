@@ -49,7 +49,7 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
 
       var timeFilter = getTimeFilter(options);
 
-      console.log(timeFilter);
+      // console.log(timeFilter);
       // console.log(options.targets);
       var promises = _.map(options.targets, function(target) {
         if (target.hide) {
@@ -117,6 +117,14 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
 
     MonDatasource.prototype.metricFindQuery = function (query, queryType) {
       var interpolated;
+
+      // console.log("--------Query----------");
+      // console.log(query);
+      if (typeof query == "string") {
+        _.map(templateSrv._values,function(v,k) {
+          return query = query.replace('$'+k,v);
+        });
+      };
 
       try {
         interpolated = templateSrv.replace(queryType);
@@ -222,8 +230,8 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
     };
 
     function handleMonQueryResponse(alias, seriesList) {
-      console.log('handleMonQueryResponse ...');
-      console.log(seriesList);
+      // console.log('handleMonQueryResponse ...');
+      // console.log(seriesList);
       var Series = new MonSeries({ seriesList: seriesList, alias: alias });
       return Series.getTimeSeries();
     }

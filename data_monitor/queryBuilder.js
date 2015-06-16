@@ -17,7 +17,7 @@ function (_) {
   p._buildQuery = function() {
     var target = this.target;
 
-    console.log('Build Query: target = ', target);
+    // console.log('Build Query: target = ', target);
 
     if (!target.measurement) {
       throw "Metric measurement is missing";
