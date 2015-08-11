@@ -239,9 +239,9 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
     function getTimeFilter(options) {
       var from = getTime(options.range.from);
       var until = getTime(options.range.to);
-      var fromIsAbsolute = from[from.length-1] === 's';
+      var fromIsAbsolute = _.isString(from);
 
-      if (until === 'now' && !fromIsAbsolute) {
+      if (until === 'now' && fromIsAbsolute) {
         // return 'time > ' + from;
         return {from:from.split(' - ')[1],until:until};
       }
@@ -255,12 +255,12 @@ function (angular, _, kbn, MonQueryBuilder, MonSeries) {
         return date.replace('-', ' - ');
       }
 
-      return to_utc_epoch_seconds(date);
-      // return date;
+      // return to_utc_epoch_seconds(date);
+      return date;
     }
 
     function to_utc_epoch_seconds(date) {
-      return (date.getTime() / 1000).toFixed(0) + 's';
+      return (date.getTime() / 1000).toFixed(0);
     }
 
     return MonDatasource;

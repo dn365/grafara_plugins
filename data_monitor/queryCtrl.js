@@ -12,12 +12,7 @@ function (angular, _) {
     $scope.init = function() {
       $scope.segments = $scope.target.segments || [];
 
-      $scope.functionsSelect = [
-        'count', 'mean', 'sum', 'min',
-        'max', 'mode', 'distinct', 'median',
-        'derivative', 'stddev', 'first', 'last',
-        'difference'
-      ];
+      $scope.functionsSelect = ["min", "mimmin", "max", "mimmax", "dev", "sum", "avg", "zimsum"];
 
       checkOtherSegments(0);
     };

@@ -25,7 +25,7 @@ function (_) {
 
     // var query = 'SELECT ';
     var measurement = target.measurement;
-    var aggregationFunc = target.function || 'mean';
+    var aggregationFunc = target.function || 'avg';
 
     // if(!measurement.match('^/.*/') && !measurement.match(/^merge\(.*\)/)) {
     //   measurement = '"' + measurement+ '"';

@@ -15,35 +15,21 @@ function (_) {
   p.getTimeSeries = function() {
     var output = [];
     var self = this;
-
     if (!self.seriesList) {
       return output;
     }
-
     var alias = self.alias;
-
     _.map(this.seriesList, function(series) {
-      return _.map(series, function(values, series_name) {
-        var datapoints = [];
-        var seriesName = series_name;
-
-        for (var i = 0; i < values.length; i++) {
-          datapoints[i] = [values[i].value, new Date(values[i].time).getTime()];
-        }
-
-        // console.log('show seriesName ' + alias);
-
-        if (alias) {
-          seriesName = alias;
-        }
-
-        output.push({ target: seriesName, datapoints: datapoints });
-      });
-
+      var seriesName = series.metric;
+      var datapoints = [];
+      for (var i = 0; i < series.values.length; i++) {
+        datapoints[i] = [series.values[i][1],parseInt(series.values[i][0])*1000]
+      };
+      if (alias) {
+        seriesName = alias;
+      }
+      output.push({ target: seriesName, datapoints: datapoints });
     });
-
-    // console.log('show output ...');
-    // console.log(output);
     return output;
   };
 
