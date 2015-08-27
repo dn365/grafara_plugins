@@ -5,9 +5,9 @@ function (_) {
   'use strict';
 
   function MonSeries(options) {
-    this.seriesList = options.seriesList;
+    this.series = options.series;
     this.alias = options.alias;
-    // this.annotation = options.annotation;
+    this.annotation = options.annotation;
   }
 
   var p = MonSeries.prototype;
@@ -15,29 +15,70 @@ function (_) {
   p.getTimeSeries = function() {
     var output = [];
     var self = this;
-    if (!self.seriesList) {
+    var i, j;
+
+    if (self.series.length === 0) {
       return output;
     }
-    var alias = self.alias;
-    _.map(this.seriesList, function(series) {
-      var seriesName = series.metric;
-      var datapoints = [];
-      for (var i = 0; i < series.values.length; i++) {
-        datapoints[i] = [series.values[i][1],parseInt(series.values[i][0])*1000]
-      };
-      if (alias) {
-        seriesName = alias;
+
+    _.each(self.series, function(series) {
+      // console.log("MonSeries getTimeSeries: -------------");
+      // console.log(series);
+
+      series['columns'] = ["time","value"];
+      var columns = series.columns.length;
+      var tags = _.map(series.tags, function(value, key) {
+        return key + ': ' + value;
+      });
+
+      for (j = 1; j < columns; j++) {
+        var seriesName = series.metric;
+        var columnName = series.columns[j];
+        if (columnName !== 'value') {
+          seriesName = seriesName + '.' + columnName;
+        }
+
+        if (self.alias) {
+          seriesName = self._getSeriesName(series, j);
+        } else if (series.tags) {
+          seriesName = seriesName + ' {' + tags.join(', ') + '}';
+        }
+
+        var datapoints = [];
+        if (series.values) {
+          for (i = 0; i < series.values.length; i++) {
+            datapoints[i] = [series.values[i][j],parseInt(series.values[i][0])*1000];
+          }
+        }
+
+        output.push({ target: seriesName, datapoints: datapoints});
       }
-      output.push({ target: seriesName, datapoints: datapoints });
     });
+
     return output;
+  };
+
+  p._getSeriesName = function(series, index) {
+    var regex = /\$(\w+)|\[\[([\s\S]+?)\]\]/g;
+
+    return this.alias.replace(regex, function(match, g1, g2) {
+      var group = g1 || g2;
+
+      if (group === 'm' || group === 'measurement') { return series.metric; }
+      if (group === 'col') { return series.columns[index]; }
+      if (group.indexOf('tag_') !== 0) { return match; }
+
+      var tag = group.replace('tag_', '');
+      if (!series.tags) { return match; }
+      return series.tags[tag];
+    });
   };
 
   p.getAnnotations = function () {
     var list = [];
     var self = this;
 
-    _.each(this.seriesList, function (series) {
+    _.each(this.series, function (series) {
       var titleCol = null;
       var timeCol = null;
       var tagsCol = null;
@@ -52,18 +93,14 @@ function (_) {
         if (column === self.annotation.textColumn) { textCol = index; return; }
       });
 
-      _.each(series.points, function (point) {
+      _.each(series.values, function (value) {
         var data = {
           annotation: self.annotation,
-          time: point[timeCol],
-          title: point[titleCol],
-          tags: point[tagsCol],
-          text: point[textCol]
+          time: + new Date(value[timeCol]),
+          title: value[titleCol],
+          tags: value[tagsCol],
+          text: value[textCol]
         };
-
-        if (tagsCol) {
-          data.tags = point[tagsCol];
-        }
 
         list.push(data);
       });

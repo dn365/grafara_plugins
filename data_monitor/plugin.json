@@ -1,8 +1,8 @@
 {
   "pluginType": "datasource",
-  "name": "data monitor v1.0",
+  "name": "data monitor v2.0",
 
-  "type": "data_mon",
+  "type": "data_monitor",
   "serviceName": "MonDatasource",
 
   "module": "plugins/datasource/data_monitor/datasource",
