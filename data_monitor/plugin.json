@@ -1,6 +1,6 @@
 {
   "pluginType": "datasource",
-  "name": "data monitor v2.0",
+  "name": "Data Monitor v2.0",
 
   "type": "data_monitor",
   "serviceName": "MonDatasource",

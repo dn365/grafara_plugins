@@ -102,7 +102,7 @@ function (_) {
     var target = this.target;
 
     if (!target.measurement) {
-      throw "Metric measurement is missing";
+      throw "Metric is missing";
     }
 
     // if (!target.fields) {
