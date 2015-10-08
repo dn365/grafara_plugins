@@ -12,9 +12,9 @@ function (angular, _, MonQueryBuilder) {
 
     $scope.init = function() {
       var target = $scope.target;
-      
-      console.log("MonQueryCtrl init: ---");
-      console.log(target);
+
+      // console.log("MonQueryCtrl init: ---");
+      // console.log(target);
 
       target.tags = target.tags || [];
       target.groupByTags = target.groupByTags || [];

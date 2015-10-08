@@ -30,8 +30,8 @@ function (angular, _, kbn, MonSeries, MonQueryBuilder) {
       this.supportMetrics = true;
 
       this.editorSrc = 'app/features/data_monitor/partials/query.editor.html';
-      console.log("----templateSrv----");
-      console.log(templateSrv);
+      // console.log("----templateSrv----");
+      // console.log(templateSrv);
       // var query = window.location.href.split('?')[1];
       // var vars = query.split("&");
       //
