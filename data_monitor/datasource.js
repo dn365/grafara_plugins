@@ -30,16 +30,22 @@ function (angular, _, kbn, MonSeries, MonQueryBuilder) {
       this.supportMetrics = true;
 
       this.editorSrc = 'app/features/data_monitor/partials/query.editor.html';
-
-      var query = window.location.href.split('?')[1];
-      var vars = query.split("&");
-
-      for (var i=0;i<vars.length;i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] === "api_key") {
-          // this.api = decodeURIComponent(pair[1]);
-          this.api_key = pair[1];
-        }
+      console.log("----templateSrv----");
+      console.log(templateSrv);
+      // var query = window.location.href.split('?')[1];
+      // var vars = query.split("&");
+      //
+      // for (var i=0;i<vars.length;i++) {
+      //   var pair = vars[i].split("=");
+      //   if (pair[0] === "api_key") {
+      //     // this.api = decodeURIComponent(pair[1]);
+      //     this.api_key = pair[1];
+      //   }
+      // }
+      if (templateSrv._values.api_key) {
+        this.api_key = templateSrv._values.api_key;
+      } else {
+        this.api_key = null;
       }
     }
 
@@ -72,9 +78,11 @@ function (angular, _, kbn, MonSeries, MonQueryBuilder) {
         // console.log("templateSrv values: -----");
         // console.log(strQuery);
         // console.log(templateSrv._values);
-
+        // var self = this;
         _.map(templateSrv._values,function(v,k) {
-
+          // if (k == "api_key") {
+          //   self.api_key = v;
+          // };
           return strQuery = strQuery.replace('/$'+k+'/',v);
         });
 
